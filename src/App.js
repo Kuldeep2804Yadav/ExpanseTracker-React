@@ -1,8 +1,10 @@
+import AuthPage from "./components/Authentication/AuthPage";
 
 function App() {
   return (
-    <div className="App">
-      <h1>App</h1>
+    <div >
+      
+      <AuthPage/>
     </div>
   );
 }

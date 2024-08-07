@@ -3,10 +3,11 @@ import { Context } from "../../contextApi/Context";
 
 
 const Header = (props) => {
-  const { setContactFormOpen } = useContext(Context);
+  const { setContactFormOpen,setProfilePara,setTitle} = useContext(Context);
   const openHandler = () => {
     setContactFormOpen(true);
-    console.log("clicked");
+    setTitle("Winner never quite.Quitter never wins");
+    setProfilePara("Your Profile is 64 % completed .A complete profile has Higher chances of landing job");
   };
 
   return (

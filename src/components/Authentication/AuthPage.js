@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext} from "react";
 import InputAuth from "./InputAuth";
 import { useNavigate } from "react-router";
+import { authContext } from "../../contextApi/auth-context";
 
 const AuthPage = () => {
-  const [login, setLoggedIn] = useState(false);
-  const [error, setError] = useState(null);
+  const {login,setLoggedIn,error,setError,setIdToken}=useContext(authContext);
   const naviagte = useNavigate();
 
   const loginHandler = async (formData) => {
@@ -31,13 +31,15 @@ const AuthPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-      });
-      const data = response.json();
+      })
+      const data =await response.json();
+      console.log(data)
       if (!response.ok) {
         throw new Error(data.error.message || "An errr Occured");
       } else {
         alert("suceessfully login");
         setLoggedIn(true);
+        setIdToken(data.idToken);
        
       }
       if (login) {

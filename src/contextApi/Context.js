@@ -13,9 +13,9 @@ import React,{useState} from "react";
         setContactFormOpen,
         contactFormOpen,
         profilepara,
-        setProfilePara,
+        setProfilePara,title,
         setTitle,
-        title
+        
         
     }
 

@@ -1,9 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const InputAuth = (props) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,6 +30,9 @@ const InputAuth = (props) => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+ 
+
 
   return (
     <form onSubmit={formSubmitHandler} className="p-3 text-center">
@@ -77,7 +82,7 @@ const InputAuth = (props) => {
       >
         {!props.login ? "Signup" : "Login"}
       </button>
-      {props.login && <button className="my-3 text-red-500">Forgot Password?</button>}
+      {props.login && <Link to={'/forgetpassword'}><button className="my-3 text-red-500" >Forgot Password?</button></Link>}
     </form>
   );
 };

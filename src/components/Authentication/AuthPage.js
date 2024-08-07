@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import InputAuth from "./InputAuth";
 import { useNavigate } from "react-router";
 
-
 const AuthPage = () => {
   const [login, setLoggedIn] = useState(false);
-  const [error, setError] = useState();
-  const naviagte= useNavigate();
-
+  const [error, setError] = useState(null);
+  const naviagte = useNavigate();
 
   const loginHandler = async (formData) => {
     let url;
@@ -15,7 +13,7 @@ const AuthPage = () => {
       url =
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAALviDexVj08E56WEoeWX2oCtKXno-d1k";
     } else {
-      if (formData.password != formData.confirmPassword) {
+      if (formData.password !== formData.confirmPassword) {
         alert("Password And Confirm Password Should Be Same");
       } else {
         url =
@@ -34,55 +32,57 @@ const AuthPage = () => {
           "Content-Type": "application/json",
         },
       });
+      const data = response.json();
       if (!response.ok) {
-        throw new Error("wrong");
+        throw new Error(data.error.message || "An errr Occured");
       } else {
         alert("suceessfully login");
         setLoggedIn(true);
+       
       }
-      if(login){
-        naviagte('/home', {replace: true})
+      if (login) {
+        naviagte("/home", { replace: true });
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       setError(error.message);
+      
     }
   };
 
   return (
-    <div className=" mt-10 ">
-      <div className=" h-1/2 w-1/5 border border-2 border-black shadow-lg rounded-sm m-auto p-3">
+    <div className=" flex flex-col justify-center items-center min-h-screen   ">
+      <div className=" h-1/2 w-1/5 border border-2 shadow-lg rounded-lg p-3">
         <h1 className="text-center text-black my-2 font-bold text-xl">
           {login ? "Login" : "SignUp"}
         </h1>
+        {error && alert(error)}
         <InputAuth loginHandler={loginHandler} login={login} />
       </div>
-      <div className=" mt-4 h-10 w-1/5 border border-gray-300 bg-green-300 m-auto flex items-center justify-center shadow-md">
-        <div>
-          {!login ? (
-            <div>
-              <span>Have an Account ?</span>
-              <button
-                onClick={() => {
-                  setLoggedIn(true);
-                }}
-              >
-                Login
-              </button>
-            </div>
-          ) : (
-            <div>
-              <span> Do not have an Account ? </span>
-              <button
-                onClick={() => {
-                  setLoggedIn(false);
-                }}
-              >
-                SignUp
-              </button>
-            </div>
-          )}
-        </div>
+      <div className=" mt-4 h-10 w-1/5 border border-gray-300 bg-green-300  flex items-center justify-center shadow-md">
+        {!login ? (
+          <div>
+            <span>Have an Account ? </span>
+            <button
+              onClick={() => {
+                setLoggedIn(true);
+              }}
+            >
+              Login
+            </button>
+          </div>
+        ) : (
+          <div>
+            <span> Do not have an Account ? </span>
+            <button
+              onClick={() => {
+                setLoggedIn(false);
+              }}
+            >
+              SignUp
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

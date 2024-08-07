@@ -77,7 +77,7 @@ const InputAuth = (props) => {
       >
         {!props.login ? "Signup" : "Login"}
       </button>
-      {props.login && <button className="my-3">Forgot Password?</button>}
+      {props.login && <button className="my-3 text-red-500">Forgot Password?</button>}
     </form>
   );
 };

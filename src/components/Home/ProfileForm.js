@@ -45,7 +45,7 @@ const ProfileForm = () => {
     if (idToken) {
       getProfileData();
     }
-  }, [idToken]);
+  },[idToken]);
 
   const profileFormSubmitHandler = async (e) => {
     e.preventDefault();

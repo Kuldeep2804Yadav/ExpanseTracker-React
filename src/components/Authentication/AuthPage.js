@@ -4,9 +4,8 @@ import { useNavigate } from "react-router";
 import { authContext } from "../../contextApi/auth-context";
 
 const AuthPage = () => {
-  const {login,setLoggedIn,error,setError,setIdToken}=useContext(authContext);
+  const {login,setLoggedIn,error,setIdToken,setError}=useContext(authContext);
   const naviagte = useNavigate();
-
   const loginHandler = async (formData) => {
     let url;
     if (login) {
@@ -33,13 +32,13 @@ const AuthPage = () => {
         },
       })
       const data =await response.json();
-      console.log(data)
       if (!response.ok) {
         throw new Error(data.error.message || "An errr Occured");
       } else {
         alert("suceessfully login");
         setLoggedIn(true);
         setIdToken(data.idToken);
+        localStorage.setItem("idToken",data.idToken)
        
       }
       if (login) {
@@ -51,6 +50,8 @@ const AuthPage = () => {
       
     }
   };
+
+  
 
   return (
     <div className=" flex flex-col justify-center items-center min-h-screen   ">

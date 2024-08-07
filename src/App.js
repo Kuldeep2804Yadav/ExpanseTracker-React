@@ -1,9 +1,7 @@
 import AuthPage from "./components/Authentication/AuthPage";
 import { Route, Routes } from "react-router";
 import Home from "./components/Home/Home";
-import ProfileForm from "./components/Home/ProfileForm";
-import { useContext } from "react";
-import { Context } from "./contextApi/Context";
+
 
 
 function App() {

@@ -17,8 +17,8 @@ const Home = () => {
       <Header title={title} profilepara={profilepara} />
       <div>
         <ExpanseForm />
-        {expense.map((item) => {
-          return <Expanse expenseData={item} />;
+        {expense.map((item,index) => {
+          return <Expanse key={index} expenseData={item} />;
         })}
       </div>
 

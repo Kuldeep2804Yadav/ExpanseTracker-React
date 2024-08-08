@@ -7,7 +7,7 @@ const ExpanseForm = () => {
   const amountRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
-  const {handleExpenseData}=useContext(Context);
+  const {addExpense}=useContext(Context);
 
   const expenseFormSubmit = (event) => {
     event.preventDefault();
@@ -17,7 +17,7 @@ const ExpanseForm = () => {
       category: categoryRef.current.value,
     };
     
-    handleExpenseData(newExpense);
+    addExpense(newExpense);
     
   };
 
@@ -40,7 +40,7 @@ const ExpanseForm = () => {
           ref={amountRef}
         />
       </div>
-      <div className="mb-4 w-2/3">
+      <div className="mb-4 w-2/3 ">
         <label
           htmlFor="description"
           className="block text-start font-bold text-xl mb-1"
@@ -50,7 +50,7 @@ const ExpanseForm = () => {
         <input
           id="description"
           type="text"
-          className="w-full rounded-md border border-gray-800 p-0.5"
+          className="w-full rounded-md border border-gray-800 px-2"
           ref={descriptionRef}
         />
       </div>

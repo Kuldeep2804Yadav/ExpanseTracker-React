@@ -10,7 +10,7 @@ import Expanse from "../Expanse/Expanse";
 const Home = () => {
   const { contactFormOpen, profilepara, title, expense } = useContext(Context);
   const { verify } = useContext(authContext);
-  console.log(expense);
+
 
   return (
     <div>

@@ -1,24 +1,38 @@
-import React, { useContext, useRef} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "../UI/Button";
 import { Context } from "../../contextApi/Context";
 
 const ExpanseForm = () => {
+  const { addExpense, startEditExpense, editMode, currentExpenseId } = useContext(Context);
+  const [formData, setFormData] = useState({
+    amount: "",
+    description: "",
+    category: "",
+  });
 
-  const amountRef = useRef();
-  const descriptionRef = useRef();
-  const categoryRef = useRef();
-  const {addExpense}=useContext(Context);
+  useEffect(() => {
+    if (editMode && currentExpenseId) {
+      const expenseToEdit = startEditExpense(currentExpenseId);
+      setFormData(expenseToEdit);
+    }
+  }, [editMode, currentExpenseId, startEditExpense]);
 
   const expenseFormSubmit = (event) => {
     event.preventDefault();
-    const newExpense = {
-      amount: amountRef.current.value,
-      description: descriptionRef.current.value,
-      category: categoryRef.current.value,
-    };
-    
-    addExpense(newExpense);
-    
+    addExpense(formData);
+    setFormData({
+      amount: "",
+      description: "",
+      category: "",
+    });
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
   };
 
   return (
@@ -37,7 +51,8 @@ const ExpanseForm = () => {
           id="amount"
           type="number"
           className="w-full rounded-md border border-gray-800 p-0.5"
-          ref={amountRef}
+          value={formData.amount}
+          onChange={handleChange}
         />
       </div>
       <div className="mb-4 w-2/3 ">
@@ -51,7 +66,8 @@ const ExpanseForm = () => {
           id="description"
           type="text"
           className="w-full rounded-md border border-gray-800 px-2"
-          ref={descriptionRef}
+          value={formData.description}
+          onChange={handleChange}
         />
       </div>
       <div className="mb-4 w-2/3">
@@ -64,7 +80,8 @@ const ExpanseForm = () => {
         <select
           id="category"
           className="w-full rounded-md border border-gray-800 p-0.5"
-          ref={categoryRef}
+          value={formData.category}
+          onChange={handleChange}
         >
           <option value="">Select a category</option>
           <option value="petrol">Petrol</option>
@@ -74,7 +91,7 @@ const ExpanseForm = () => {
           <option value="Clothes">Clothes</option>
         </select>
       </div>
-      <Button title="Add Expense" type="submit" />
+      <Button title={editMode ? "Update Expense" : "Add Expense"} type="submit" />
     </form>
   );
 };

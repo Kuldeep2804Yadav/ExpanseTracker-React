@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
+import Button from '../UI/Button'
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { Context } from "../../contextApi/Context";
 
 const Expanse = ({ expenseData }) => {
+  const {deleteExpense,editExpense}=useContext(Context);
+
+  
   return (
-    <div className=" w-2/5 m-auto my-4 bg-gray-100 shadow-md rounded-lg border border-gray-300 p-2 text-gray-800">
-      <div className="flex flex-col space-y-2">
-        <div className="flex justify-between items-center p-2 bg-gray-200 rounded-md border border-gray-400">
-          <span className="font-medium text-gray-700">Category:</span>
-          <span className="text-gray-900">{expenseData.category}</span>
-        </div>
-        <div className="flex justify-between items-center p-2 bg-gray-200 rounded-md border border-gray-400">
-          <span className="font-medium text-gray-700">Description:</span>
-          <span className="text-gray-900">{expenseData.description}</span>
-        </div>
-        <div className="flex justify-between items-center p-2 bg-gray-200 rounded-md border border-gray-400">
-          <span className="font-medium text-gray-700">Amount:</span>
-          <span className="text-gray-900">₹{expenseData.amount}</span>
-        </div>
-      </div>
+   
+
+    <div className="w-2/5 my-6 bg-gray-300 m-auto flex justify-between items-center shadow-lg rounded-lg border border-gray-800 p-3 text-white">
+        <div className="h-auto w-1/6 p-2 flex items-center justify-center border border-black rounded-md bg-purple-950">₹{expenseData.amount}</div>
+        <div className="  w-1/5 h-auto p-2 text-center border border-black rounded-md bg-gray-700">{expenseData.description}</div>
+        <div className=" w-1/5 h-auto p-2 text-center border border-black rounded-md bg-gray-700">{expenseData.category}</div>
+        <Button title={<FaEdit/>} onClick={() => editExpense(expenseData.id,expenseData)}  className=" w-1/10 "/>
+        <Button title={<MdDelete/>} onClick={() => deleteExpense(expenseData.id)} className="w-1/10 text-center"/>
+
     </div>
   );
 };

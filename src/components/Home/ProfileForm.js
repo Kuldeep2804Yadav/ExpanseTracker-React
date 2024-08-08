@@ -3,9 +3,10 @@ import { FaSquareGithub } from "react-icons/fa6";
 import { TbWorld } from "react-icons/tb";
 import { authContext } from "../../contextApi/auth-context";
 import { Context } from "../../contextApi/Context";
+import Button from "../UI/Button";
 
 const ProfileForm = () => {
-  const { error, setError, idToken } = useContext(authContext);
+  const { error,setError, idToken } = useContext(authContext);
   const { setContactFormOpen, setProfilePara } = useContext(Context);
   const [profileFormData, setProfileFormData] = useState({
     name: "",
@@ -32,7 +33,10 @@ const ProfileForm = () => {
       console.log(data);
       if (res.ok) {
         const user = data.users[0];
-        setProfileFormData({ name: user.displayName || "", image: user.photoUrl || "" });
+        setProfileFormData({
+          name: user.displayName || "",
+          image: user.photoUrl || "",
+        });
       } else {
         throw new Error(data.error.message || "Failed to fetch profile data");
       }
@@ -45,7 +49,7 @@ const ProfileForm = () => {
     if (idToken) {
       getProfileData();
     }
-  },[idToken]);
+  }, [idToken]);
 
   const profileFormSubmitHandler = async (e) => {
     e.preventDefault();
@@ -80,15 +84,10 @@ const ProfileForm = () => {
   };
 
   return (
-    <div className="w-3/4 border border-2 shadow-lg m-auto bg-pink-50 mt-7">
+    <div className="w-3/4 border border-2 shadow-lg m-auto bg-pink-50 mt-7 h-max">
       <div className="flex items-center justify-between mx-2 text-xl">
         <h1>Contact Details</h1>
-        <button
-          className="h-auto ml-2 w-auto py-1 px-2 bg-red-500 text-white text-center rounded-md my-3 font-bold text-lg"
-          onClick={closeFormHandler}
-        >
-          Cancel
-        </button>
+        <Button onClick={closeFormHandler} title="Cancel" />
       </div>
       <form onSubmit={profileFormSubmitHandler}>
         <div className="flex items-center justify-around mx-3 text-xl">
@@ -120,11 +119,9 @@ const ProfileForm = () => {
           </div>
         </div>
 
-        <button className="h-auto ml-2 w-auto py-1 px-2 bg-red-500 text-white text-center rounded-md my-3 font-bold text-lg">
-          Update
-        </button>
+        <Button title="Update" />
       </form>
-      {error && <h1 className="font-bold text-3xl text-black">{error}</h1>}
+      {/* {error && <h1 className="font-bold text-3xl text-black">{error}</h1>} */}
     </div>
   );
 };

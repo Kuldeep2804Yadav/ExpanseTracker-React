@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { replace, useNavigate } from "react-router";
-import Button from "../UI/Button";
+import { useNavigate } from "react-router";
 
 const ForgetPassword = () => {
   const [forgetFormData, setForgetFormData] = useState({ email: "" });
@@ -24,7 +23,7 @@ const ForgetPassword = () => {
             email: forgetFormData.email,
           }),
           headers: {
-            "content-Type": "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -33,23 +32,31 @@ const ForgetPassword = () => {
         alert("Check your Email for Forget Password");
         navigate("/", { replace: true });
       } else {
-        throw new Error(data.error.messge || "Invalid Email");
+        throw new Error(data.error.message || "Invalid Email");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <div className=" flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
         onSubmit={forgetFormSubmit}
-        className="h-auto w-56 bg-pink-200  p-2 "
+        className="w-full max-w-sm bg-white rounded-lg shadow-md p-6"
       >
-        <h1 className="text-center mt-1 font-bold ">Forget Password</h1>
-        <div className="text-center my-6">
-          <label htmlFor="email">Email</label>
+        <h1 className="text-2xl font-bold text-center mb-4 text-gray-700">
+          Forget Password
+        </h1>
+        <div className="mb-4">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Email
+          </label>
           <input
-            className="border border-black p-1"
+            className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             id="email"
             type="email"
             name="email"
@@ -59,8 +66,12 @@ const ForgetPassword = () => {
             onChange={emailHandler}
           />
         </div>
-        
-        <button type="submit" className="text-white border border-black px-1 w-3/4 rounded-lg bg-red-600 hover:bg-white hover:text-black mx-6">Submit</button>
+        <button
+          type="submit"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );

@@ -22,7 +22,7 @@ const EmailVerify = () => {
       );
       const data = await res.json();
       if (res.ok) {
-        alert("Success");
+        alert("Check Your Email For Varification");
         setVerify(true);
       } else {
         throw new Error(data.error.message || "Invalid token");

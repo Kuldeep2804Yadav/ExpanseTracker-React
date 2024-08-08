@@ -2,11 +2,12 @@ import React from "react";
 
 const Button = (props) => {
   return (
-    <div
-      className={` ${props.className} h-auto text-white cursor-pointer w-max p-2 m-2 bg-blue-400 shadow-md hover:bg-white hover:text-black border border-black1 rounded-lg`} onClick={props.onClick}
+    <button
+      className={` h-min text-white cursor-pointer px-2 py-1 m-2 bg-red-500 shadow-md hover:bg-white hover:text-red-500 border border-red-500 rounded-lg ${props.className}`}
+      onClick={props.onClick}
     >
       {props.title}
-    </div>
+    </button>
   );
 };
 

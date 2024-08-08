@@ -5,34 +5,35 @@ import { authContext } from "../../contextApi/auth-context";
 import { useNavigate } from "react-router";
 
 const Header = (props) => {
-  const { setContactFormOpen, setProfilePara, setTitle } = useContext(Context);
-  const navigate=useNavigate();
+  const { setContactFormOpen, setTitle } = useContext(Context);
+  const navigate = useNavigate();
 
-  const { setIdToken, setLoggedIn,setVerify } = useContext(authContext);
+  const {  setVerify,logOut } = useContext(authContext);
+
   const logoutHandler = () => {
-    setIdToken("");
-    localStorage.removeItem("idToken");
-    setLoggedIn(false);
-    navigate('/', {replace:"true"})
+    logOut();
+    navigate("/", { replace: true });
   };
+
   const openHandler = () => {
     setContactFormOpen(true);
-    setTitle("Winner never quite.Quitter never wins");
-    setProfilePara(
-      "Your Profile is 64 % completed .A complete profile has Higher chances of landing job"
-    );
+    setTitle("Winner never quit. Quitter never wins");
+    
     setVerify(false);
   };
 
   return (
-    <div className=" h-16 text-black p-3 border border-black flex items-center justify-between">
+    <div className=" h-max text-black p-3 border-b border-gray-200 flex items-center justify-between bg-gray-50 shadow-md">
       <div className="font-bold text-xl">{props.title}</div>
-      <div className=" h-12  w-auto flex items-center justify-center bg-gray-300 rounded-2xl bg p-2">
-        <p className=" w-auto">{props.profilepara}</p>
-        <button className="mx-2 w-28 text-blue-800" onClick={openHandler}>
+      <div className="h-10 flex items-center bg-gray-300 rounded-2xl p-3">
+        <p className="mr-4">{props.profilepara}</p>
+        <button
+          className="mx-2 w-28 text-blue-800 hover:underline focus:outline-none"
+          onClick={openHandler}
+        >
           Complete Now
         </button>
-        <Button title="Logout" onClick={logoutHandler} />
+        <Button title="Logout" className="py-0.5" onClick={logoutHandler} />
       </div>
     </div>
   );

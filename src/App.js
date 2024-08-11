@@ -7,13 +7,13 @@ import Welcome from "./components/UI/Welcome";
 import { useSelector } from "react-redux";
 
 function App() {
-  
   const idToken = useSelector((state) => state.auth.idToken);
   const isLoggedIn = !!idToken;
+  const darkModeTheme = useSelector((state)=> state.theme.darkMode);
 
 
   return (
-    <div>
+    <div className={darkModeTheme ? "darkmode" : "lightMode "}>
       <Routes>
         <Route
           path="/"

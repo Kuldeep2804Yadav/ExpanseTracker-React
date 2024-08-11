@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+
 const firebaseUrl = 'https://expanse-tracker-50dd1-default-rtdb.firebaseio.com/expenses';
 
 export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async () => {
   const response = await axios.get(`${firebaseUrl}.json`);
-  console.log('Fetched data:', response.data); 
   const fetchedExpenseData = [];
   for (let key in response.data) {
     fetchedExpenseData.push({
@@ -13,21 +13,19 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
       description: response.data[key].description,
       category: response.data[key].category,
     });
-
   }
   return fetchedExpenseData;
 });
 
 export const addExpense = createAsyncThunk('expenses/addExpense', async (expenseData) => {
-  await axios.post(`${firebaseUrl}.json`, expenseData);
-  return expenseData;
+  const response = await axios.post(`${firebaseUrl}.json`, expenseData);
+  return { id: response.data.name, ...expenseData }; // Include ID from Firebase response
 });
 
 export const updateExpense = createAsyncThunk('expenses/updateExpense', async ({ id, expenseData }) => {
   await axios.put(`${firebaseUrl}/${id}.json`, expenseData);
   return { id, ...expenseData };
 });
-
 
 export const deleteExpense = createAsyncThunk('expenses/deleteExpense', async (id) => {
   await axios.delete(`${firebaseUrl}/${id}.json`);
@@ -40,7 +38,7 @@ const initialState = {
   profilePara: 'Your Profile is Incomplete',
   title: 'Welcome To Expense Tracker',
   loading: false,
-  
+  error: null,
 };
 
 const expenseSlice = createSlice({
@@ -81,6 +79,9 @@ const expenseSlice = createSlice({
         if (index !== -1) {
           state.expenses[index] = action.payload;
         }
+      })
+      .addCase(updateExpense.rejected, (state, action) => {
+        state.error = action.error.message;
       })
       .addCase(deleteExpense.fulfilled, (state, action) => {
         state.expenses = state.expenses.filter((expense) => expense.id !== action.payload);

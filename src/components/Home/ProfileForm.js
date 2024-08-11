@@ -7,6 +7,7 @@ import { setContactFormOpen, setProfilePara } from '../../contextApi/expenseSlic
 
 const ProfileForm = () => {
   const idToken = useSelector((state) => state.auth.idToken);
+  const darkModeTheme = useSelector((state)=> state.theme.darkMode);
   const dispatch = useDispatch();
   const [profileFormData, setProfileFormData] = useState({
     name: "",
@@ -83,7 +84,7 @@ const ProfileForm = () => {
   };
 
   return (
-    <div className="w-3/4 border border-2 shadow-lg m-auto bg-pink-50 mt-7 h-max">
+    <div className={`darkModeTheme ? "darkmode" : "lightMode " w-3/4 border border-2 shadow-lg m-auto bg-pink-50 mt-7 h-max `}>
       <div className="flex items-center justify-between mx-2 text-xl">
         <h1>Contact Details</h1>
         <Button onClick={closeFormHandler} title="Cancel" />

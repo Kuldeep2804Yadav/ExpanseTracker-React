@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Button from "../UI/Button";
 import { addExpense, updateExpense } from "../../contextApi/expenseSlice";
 
-const ExpanseForm = ({ editMode, initialData = {} }) => {
+const ExpanseForm = ({ editMode, initialData = {}, onClose }) => {
   const [formData, setFormData] = useState({
-    amount: initialData.amount || "",
-    description: initialData.description || "",
-    category: initialData.category || "",
+    amount: "",
+    description: "",
+    category: "",
   });
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (editMode) {
+      setFormData({
+        amount: initialData.amount || "",
+        description: initialData.description || "",
+        category: initialData.category || "",
+      });
+    }
+  }, [editMode, initialData]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -27,6 +37,12 @@ const ExpanseForm = ({ editMode, initialData = {} }) => {
     } else {
       dispatch(addExpense(formData));
     }
+    if (onClose) onClose();
+    setFormData({
+      amount: "",
+      description: "",
+      category: "",
+    });
   };
 
   return (
@@ -39,7 +55,7 @@ const ExpanseForm = ({ editMode, initialData = {} }) => {
           htmlFor="amount"
           className="block text-start font-bold text-xl mb-1"
         >
-          Amount :
+          Amount:
         </label>
         <input
           id="amount"
@@ -49,12 +65,12 @@ const ExpanseForm = ({ editMode, initialData = {} }) => {
           onChange={handleChange}
         />
       </div>
-      <div className="mb-4 w-2/3 ">
+      <div className="mb-4 w-2/3">
         <label
           htmlFor="description"
           className="block text-start font-bold text-xl mb-1"
         >
-          Description :
+          Description:
         </label>
         <input
           id="description"
@@ -69,7 +85,7 @@ const ExpanseForm = ({ editMode, initialData = {} }) => {
           htmlFor="category"
           className="block text-start font-bold text-xl mb-1"
         >
-          Expense Category :
+          Expense Category:
         </label>
         <select
           id="category"
@@ -85,7 +101,6 @@ const ExpanseForm = ({ editMode, initialData = {} }) => {
           <option value="Clothes">Clothes</option>
         </select>
       </div>
-
       <Button
         title={editMode ? "Update Expense" : "Add Expense"}
         type="submit"

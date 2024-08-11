@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSquareGithub } from "react-icons/fa6";
 import { TbWorld } from "react-icons/tb";
-import { authContext } from "../../contextApi/auth-context";
-import { Context } from "../../contextApi/Context";
 import Button from "../UI/Button";
+import { useSelector, useDispatch } from "react-redux";
+import { setContactFormOpen, setProfilePara } from '../../contextApi/expenseSlice'; 
 
 const ProfileForm = () => {
-  const { error,setError, idToken } = useContext(authContext);
-  const { setContactFormOpen, setProfilePara } = useContext(Context);
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
   const [profileFormData, setProfileFormData] = useState({
     name: "",
     image: "",
@@ -30,7 +30,6 @@ const ProfileForm = () => {
       );
 
       const data = await res.json();
-      console.log(data);
       if (res.ok) {
         const user = data.users[0];
         setProfileFormData({
@@ -41,7 +40,7 @@ const ProfileForm = () => {
         throw new Error(data.error.message || "Failed to fetch profile data");
       }
     } catch (error) {
-      setError(error.message);
+      console.log(error);
     }
   };
 
@@ -59,7 +58,7 @@ const ProfileForm = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken,
+            idToken:idToken,
             displayName: profileFormData.name,
             photoUrl: profileFormData.image,
             returnSecureToken: false,
@@ -72,15 +71,15 @@ const ProfileForm = () => {
         throw new Error(data.error.message || "Invalid data type");
       } else {
         alert("Profile updated successfully");
-        setProfilePara("Your Profile Has Completed");
+        dispatch(setProfilePara("Your Profile Has Completed")); // Update Redux state instead of context
       }
     } catch (error) {
-      setError(error.message);
+      console.log(error);
     }
   };
 
   const closeFormHandler = () => {
-    setContactFormOpen(false);
+    dispatch(setContactFormOpen(false)); // Update Redux state instead of context
   };
 
   return (
@@ -121,7 +120,6 @@ const ProfileForm = () => {
 
         <Button title="Update" />
       </form>
-      {/* {error && <h1 className="font-bold text-3xl text-black">{error}</h1>} */}
     </div>
   );
 };

@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import { authContext } from '../../contextApi/auth-context';
+import React from 'react';
 import Button from '../UI/Button';
+import { useSelector } from 'react-redux';
 
 const EmailVerify = () => {
-  const { idToken, error, setError, setVerify } = useContext(authContext);
+  // Accessing idToken and error from the Redux store
+  const idToken = useSelector((state) => state.auth.idToken);
 
   const verifyEmailHandler = async () => {
     try {
@@ -20,22 +21,20 @@ const EmailVerify = () => {
           },
         }
       );
+
       const data = await res.json();
+
       if (res.ok) {
-        alert("Check Your Email For Varification");
-        setVerify(true);
+        alert("Check Your Email For Verification");
+        // Dispatch an action to update the verify state if necessary
       } else {
         throw new Error(data.error.message || "Invalid token");
       }
     } catch (error) {
       console.log(error);
-      setError(error.message);
+      // Dispatch an action to set the error in Redux if necessary
     }
   };
-
-  if (error) {
-    return <h1 className="text-center">{error}</h1>;
-  }
 
   return (
     <div className="flex justify-center items-center min-h-screen">

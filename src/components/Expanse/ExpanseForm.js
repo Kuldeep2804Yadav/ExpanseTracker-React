@@ -1,31 +1,16 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "../UI/Button";
-import { Context } from "../../contextApi/Context";
+import { addExpense, updateExpense } from "../../contextApi/expenseSlice";
 
-const ExpanseForm = () => {
-  const { addExpense, startEditExpense, editMode, currentExpenseId } = useContext(Context);
+const ExpanseForm = ({ editMode, initialData = {} }) => {
   const [formData, setFormData] = useState({
-    amount: "",
-    description: "",
-    category: "",
+    amount: initialData.amount || "",
+    description: initialData.description || "",
+    category: initialData.category || "",
   });
 
-  useEffect(() => {
-    if (editMode && currentExpenseId) {
-      const expenseToEdit = startEditExpense(currentExpenseId);
-      setFormData(expenseToEdit);
-    }
-  }, [editMode, currentExpenseId, startEditExpense]);
-
-  const expenseFormSubmit = (event) => {
-    event.preventDefault();
-    addExpense(formData);
-    setFormData({
-      amount: "",
-      description: "",
-      category: "",
-    });
-  };
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -35,10 +20,19 @@ const ExpanseForm = () => {
     }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editMode) {
+      dispatch(updateExpense({ id: initialData.id, expenseData: formData }));
+    } else {
+      dispatch(addExpense(formData));
+    }
+  };
+
   return (
     <form
       className="w-2/5 m-auto mt-11 flex flex-col items-center bg-gray-300 border border-gray-800 shadow-lg rounded-lg p-6 text-center"
-      onSubmit={expenseFormSubmit}
+      onSubmit={handleSubmit}
     >
       <div className="mb-4 w-2/3">
         <label
@@ -91,7 +85,11 @@ const ExpanseForm = () => {
           <option value="Clothes">Clothes</option>
         </select>
       </div>
-      <Button title={editMode ? "Update Expense" : "Add Expense"} type="submit" />
+
+      <Button
+        title={editMode ? "Update Expense" : "Add Expense"}
+        type="submit"
+      />
     </form>
   );
 };

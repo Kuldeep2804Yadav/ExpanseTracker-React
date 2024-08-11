@@ -3,11 +3,14 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import AuthPage from "./components/Authentication/AuthPage";
 import Home from "./components/Home/Home";
 import ForgetPassword from "./components/Authentication/ForgetPassword";
-import { authContext } from "./contextApi/auth-context";
 import Welcome from "./components/UI/Welcome";
+import { useSelector } from "react-redux";
 
 function App() {
-  const { isLoggedIn } = useContext(authContext);
+  
+  const idToken = useSelector((state) => state.auth.idToken);
+  const isLoggedIn = !!idToken;
+
 
   return (
     <div>
